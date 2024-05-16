@@ -1,7 +1,7 @@
 import unittest
 
-from textnode import TextNode, Text_node_type
-from main import text_node_to_html_node
+from textnode import TextNode, Text_node_type, text_node_to_html_node
+from inline_markdown import split_nodes_delimiter
 from htmlNode import LeafNode
 
 
