@@ -12,7 +12,7 @@ def split_nodes_delimiter(
             continue
         new_texts = node.text.split(delimiter)
         if not len(new_texts) % 2:
-            raise SyntaxError("Invalid markdown syntax")
+            raise SyntaxError(f"Invalid markdown syntax: {node.text}")
         for index, item in enumerate(new_texts):
             if item == "":
                 continue
