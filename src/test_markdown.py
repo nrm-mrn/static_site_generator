@@ -6,6 +6,9 @@ from markdown_blocks import (
     quote_block_to_HTML_node,
     ul_block_to_HTML_node,
     ol_block_to_HTML_node,
+    code_block_to_HTML_node,
+    h_block_to_HTML_node,
+    p_block_to_HTML_node,
 )
 from htmlNode import LeafNode, ParentNode
 from textnode import TextNode, Text_node_type
@@ -278,5 +281,128 @@ class Test_markdown_to_Html_node(unittest.TestCase):
             self.assertEqual(res.tag, exp_res[i].tag)
             for i_ch, child in enumerate(res.children):
                 self.assertIsInstance(child, ParentNode)
+                self.assertEqual(child.tag, exp_res[i].children[i_ch].tag)
+                self.assertEqual(child.value, exp_res[i].children[i_ch].value)
+
+    def test_md_code_to_HTML_node(self):
+        tests = [
+            "```one line code sample```",
+            "``` multiline code sample\nwith second\nand third line```",
+        ]
+        exp_res = [
+            ParentNode(
+                "pre", [ParentNode("code", [LeafNode(None, "one line code sample")])]
+            ),
+            ParentNode(
+                "pre",
+                [
+                    ParentNode(
+                        "code",
+                        [
+                            LeafNode(
+                                None,
+                                " multiline code sample\nwith second\nand third line",
+                            )
+                        ],
+                    )
+                ],
+            ),
+        ]
+        for i, test in enumerate(tests):
+            res = code_block_to_HTML_node(test)
+            self.assertIsInstance(res, ParentNode)
+            self.assertEqual(res.tag, exp_res[i].tag)
+            for i_ch, child in enumerate(res.children):
+                self.assertIsInstance(child, ParentNode)
+                self.assertEqual(child.tag, exp_res[i].children[i_ch].tag)
+                self.assertEqual(child.value, exp_res[i].children[i_ch].value)
+
+    def test_md_h_to_html_code(self):
+        tests = [
+            "# main h",
+            "## second-level **h**",
+            "### *third-level* h",
+            "#### fourth-level h",
+            "##### fifth-level h",
+            "###### last-level h",
+        ]
+
+        exp_res = [
+            ParentNode("h1", [LeafNode(None, "main h")]),
+            ParentNode(
+                "h2",
+                [
+                    LeafNode(None, "second-level "),
+                    LeafNode("b", "h"),
+                ],
+            ),
+            ParentNode(
+                "h3",
+                [
+                    LeafNode("i", "third-level"),
+                    LeafNode(None, " h"),
+                ],
+            ),
+            ParentNode(
+                "h4",
+                [
+                    LeafNode(None, "fourth-level h"),
+                ],
+            ),
+            ParentNode(
+                "h5",
+                [
+                    LeafNode(None, "fifth-level h"),
+                ],
+            ),
+            ParentNode(
+                "h6",
+                [
+                    LeafNode(None, "last-level h"),
+                ],
+            ),
+        ]
+
+        for i, test in enumerate(tests):
+            res = h_block_to_HTML_node(test)
+            self.assertIsInstance(res, ParentNode)
+            self.assertEqual(res.tag, exp_res[i].tag)
+            for i_ch, child in enumerate(res.children):
+                self.assertIsInstance(child, LeafNode)
+                self.assertEqual(child.tag, exp_res[i].children[i_ch].tag)
+                self.assertEqual(child.value, exp_res[i].children[i_ch].value)
+
+    def test_md_p_to_Html_node(self):
+        tests = [
+            "single-line p",
+            "multi-line p\nwith second line\nand third",
+            "multi-line p\nwith **second** line\nand *third*\nand ```code``` as well",
+        ]
+
+        exp_res = [
+            ParentNode("p", [LeafNode(None, "single-line p")]),
+            ParentNode(
+                "p", [LeafNode(None, "multi-line p with second line and third")]
+            ),
+            ParentNode(
+                "p",
+                [
+                    LeafNode(None, "multi-line p with "),
+                    LeafNode("b", "second"),
+                    LeafNode(None, " line and "),
+                    LeafNode("i", "third"),
+                    LeafNode(None, " and "),
+                    LeafNode("code", "code"),
+                    LeafNode(None, " as well"),
+                ],
+            ),
+        ]
+
+        for i, test in enumerate(tests):
+            res = p_block_to_HTML_node(test)
+            self.assertIsInstance(res, ParentNode)
+            self.assertEqual(res.tag, exp_res[i].tag)
+            for i_ch, child in enumerate(res.children):
+                self.assertIsInstance(child, LeafNode)
                 self.assertEqual(child.tag, exp_res[i].children[i_ch].tag)
                 self.assertEqual(child.value, exp_res[i].children[i_ch].value)
