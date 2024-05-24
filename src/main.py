@@ -8,11 +8,13 @@ def copy_content(source_path, target_path):
     os.mkdir(target_path)
     for obj in os.listdir(source_path):
         obj_path = os.path.join(source_path, obj)
+        print(f"working with {obj} in {os.listdir(source_path)}")
         if os.path.isfile(obj_path):
+            print(f"copying {obj_path} to {target_path}")
             shutil.copy(obj_path, target_path)
         else:
-            target_path = os.path.join(target_path, obj)
-            copy_content(obj_path, target_path)
+            new_target_path = os.path.join(target_path, obj)
+            copy_content(obj_path, new_target_path)
 
 
 def extract_title(markdown: str) -> str:
