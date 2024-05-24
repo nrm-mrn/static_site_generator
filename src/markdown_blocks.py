@@ -41,7 +41,8 @@ def ol_block_to_HTML_node(block: str) -> HtmlNode:
     list_items = []
     lines = block.split("\n")
     for line in lines:
-        children = text_to_children(line)
+        cleaned_line = line.lstrip("1234567890.").lstrip()
+        children = text_to_children(cleaned_line)
         list_items.append(ParentNode("li", children))
     parent = ParentNode("ol", list_items)
     return parent

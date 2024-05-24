@@ -233,15 +233,15 @@ class Test_markdown_to_Html_node(unittest.TestCase):
             ParentNode(
                 "ol",
                 [
-                    ParentNode("li", [LeafNode(None, "1. item1")]),
-                    ParentNode("li", [LeafNode(None, "2. item2")]),
-                    ParentNode("li", [LeafNode(None, "3. item3")]),
+                    ParentNode("li", [LeafNode(None, "item1")]),
+                    ParentNode("li", [LeafNode(None, "item2")]),
+                    ParentNode("li", [LeafNode(None, "item3")]),
                 ],
             ),
             ParentNode(
                 "ol",
                 [
-                    ParentNode("li", [LeafNode(None, "1. - item1")]),
+                    ParentNode("li", [LeafNode(None, "- item1")]),
                 ],
             ),
             ParentNode(
@@ -250,7 +250,6 @@ class Test_markdown_to_Html_node(unittest.TestCase):
                     ParentNode(
                         "li",
                         [
-                            LeafNode(None, "1. "),
                             LeafNode("b", "bold"),
                             LeafNode(None, " item 1"),
                         ],
@@ -258,7 +257,6 @@ class Test_markdown_to_Html_node(unittest.TestCase):
                     ParentNode(
                         "li",
                         [
-                            LeafNode(None, "2. "),
                             LeafNode("i", "italic"),
                             LeafNode(None, " item 2"),
                         ],
@@ -266,7 +264,6 @@ class Test_markdown_to_Html_node(unittest.TestCase):
                     ParentNode(
                         "li",
                         [
-                            LeafNode(None, "3. "),
                             LeafNode("code", "code"),
                             LeafNode(None, " item 3"),
                         ],
